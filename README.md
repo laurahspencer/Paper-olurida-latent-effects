@@ -5,7 +5,7 @@ Latent effects of winter warming on Olympia oyster reproduction and larval viabi
 
 Authors: Laura H Spencer(1), Erin Horkan2, Ryan Crim(2), Steven B Roberts(1)
 
-(1)University of Washington, School of Aquatic and Fishery Sciences, 1122 NE Boat St, Seattle, WA 98105, United States 
-(2)Puget Sound Restoration Fund, 8001 NE Day Rd W, Bainbridge Island, WA 98110, United States 
+(1)University of Washington, School of Aquatic and Fishery Sciences, 1122 NE Boat St, Seattle, WA 98105, United States   
+(2)Puget Sound Restoration Fund, 8001 NE Day Rd W, Bainbridge Island, WA 98110, United States  
 
-
+ 
