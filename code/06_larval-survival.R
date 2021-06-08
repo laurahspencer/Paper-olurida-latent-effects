@@ -47,6 +47,11 @@ ggplot(Survival.family.35, aes(x=FOOD:TEMP, y=Mean.Live.35)) +
 # Statistical analysis 
 # ======================
 
+# --------- Test for effects of treatment on larval survival (using average survival for each biological replicate)
+Anova(glm(cbind(mean.live, mean.dead) ~ FOOD*TEMP, data=Survival.family.35, quasibinomial)) 
+
+# ---------- Test for other factors 
+
 # Read in larval production & size data to merge with survival data to assess various factors 
 load(file = "data/larvae-collection-data") #save for later use 
 load(file = "data/larval.size") #object = average.all
@@ -54,7 +59,7 @@ load(file = "data/larval.size") #object = average.all
 # Merge survival data with collection data 
 survival.collect <- merge(x=survival, y=Collection[c(5,14,15,16,20)], by.x="Family", by.y="Group", all.x =TRUE, all.y=FALSE)
 
-# NOW create a master dataframe of larval survival, larval size, and collection data to test for various effects on survival 
+# Create a master dataframe of larval survival, larval size, and collection data to test for various effects on survival 
 survival.collect$Sample.number <- as.factor(survival.collect$Sample.number) #first convert sample # to factor 
 master <- merge(x=average.all[,c("Sample.number", "Length", "Width")], 
                 y=survival.collect, by="Sample.number", all.x=T, all.y=T) %>% 
@@ -65,8 +70,14 @@ mutate(length.cor = ifelse(Sample.number<50, Length-5.620869, Length))
 # Run GLMS to test for effects of other factors on survival  
 # Use quasibinomial model; design is balanced 
 
-# --------- Temp and Food not sign. factors
-Anova(glm(cbind(Live.35.days, Dead.35.days) ~ FOOD*TEMP, data=master, quasibinomial)) 
+# ----------- Test ALL possible factors in one model - same result 
+Anova(glm.all <- glm(cbind(Live.35.days, Dead.35.days) ~ 
+                       FOOD + TEMP + FOOD:TEMP + Live.Larvae + length.cor + Date.stocked,
+                     data=master, quasibinomial))
+
+Anova(glm.all <- glm(cbind(Live.50.days, Dead.50.days) ~ 
+                       FOOD + TEMP + FOOD:TEMP + Live.Larvae + length.cor + Date.stocked,
+                     data=master, quasibinomial))
 
 # --------- Date stocked sign. factor
 Anova(glm(cbind(Live.35.days, Dead.35.days) ~ Date.stocked, data=master, quasibinomial)) 
@@ -90,16 +101,11 @@ ggplot(master, aes(x=Live.Larvae, y=100*Live.35.days/(800))) +
        x="# live larvae collected") + 
   geom_smooth(method = "auto", color="gray50")
 
-# ----------- Larval length
+# ----------- Larval length (aka width)
 
 #test again using random effects model to include use of ethanol as preservation - definitely not sign.
 Anova(lme(cbind(Live.35.days, Dead.35.days) ~ Length, random=~1|ethanol, data=na.omit(master))) 
-
-
-# ----------- Test ALL possible factors in one model - same result 
-Anova(glm.all <- glm(cbind(Live.35.days, Dead.35.days) ~ 
-                       FOOD + TEMP + FOOD:TEMP + Live.Larvae + length.cor + Date.stocked,
-                     data=master, quasibinomial))
+Anova(lme(cbind(Live.50.days, Dead.50.days) ~ Length, random=~1|ethanol, data=na.omit(master))) 
 
 # =======================
 # LARVAL SURVIVAL FIGURE

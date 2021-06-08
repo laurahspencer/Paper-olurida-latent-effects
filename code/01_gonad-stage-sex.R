@@ -18,6 +18,15 @@ histo <- histo %>%
   filter(TREAT!="Wild") %>% droplevels() #remove those collected from the wild for this paper 
 
 
+# How many samples total? How many were each sex?
+histo %>% count() #total number sampled 
+histo %>% count(SEX) %>% mutate(percent=n/(sum(n)))
+
+# This is how many were some flavor of hermaph.: 
+histo %>% count(SEX) %>% mutate(percent=n/(sum(n))) %>%
+  filter(SEX %in% c("HPM", "H", "HPF")) %>% dplyr::select(percent) %>% sum()
+
+
 # ========================================
 # GONAD DEVELOPMENT (STAGE AND SEX RATIO)
 # ========================================
@@ -118,6 +127,11 @@ print(malstage.wkcond <- table(subset(histo, Week=="15" | Week=="16")$TREAT, sub
 chisq.test(malstage.wkcond[2:5,], simulate.p.value = T, B = 10000)  #Yes diff p-value = 0.0014
 pairwiseNominalIndependence(malstage.wkcond[2:5,],fisher = TRUE,gtest  = FALSE, chisq  = FALSE, digits = 3)
 malstage.wkcond[2:5,] %>% sum() #how many sampled? 
+(6+8)/(2+4+6+8+4) # % of D treatment (Warm/High) with late-stage sperm (2 or 3)
+(5+0)/(15+3+5+1) # % of C treatment (Cold/High) with late-stage sperm (2 or 3)
+
+2/(2+4+6+8+4) # % of D treatment (Warm/High) that lacked sperm 
+15/(15+3+5+1) # % of C treatment (Cold/High) that lacked sperm 
 
 # Female gonad stage 
 print(femalstage.wkcond <- table(subset(histo, Week=="15" | Week=="16")$TREAT, subset(histo, Week=="15" | Week=="16")$FEMSTAGE.COL))

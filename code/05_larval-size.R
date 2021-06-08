@@ -68,7 +68,7 @@ average.all <- mutate(average.all, Length.corr=if (ethanol=="NO"){Length-5.62086
                       else if (ethanol=="YES"){Length})
 
 # Calculate average size by parental winter treatment - to add to boxplots 
-length.mean <- aggregate(Length ~ FOOD:TEMP, data=average.all, mean)
+(length.mean <- aggregate(Length ~ FOOD:TEMP, data=average.all, mean))
 
 # Relevel food factors such that Low comes before High
 average.all$FOOD <- factor(average.all$FOOD, levels = rev(levels(average.all$FOOD)))
