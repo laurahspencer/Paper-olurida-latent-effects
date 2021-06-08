@@ -1,0 +1,6 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","require(tidyverse)"
+"0","require(readxl)"
+"0","require(here)"
+"0","require(purrr)"
+"0","require(plotly)"

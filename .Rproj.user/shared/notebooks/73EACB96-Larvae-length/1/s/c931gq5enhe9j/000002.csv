@@ -1,0 +1,7 @@
+"0","ggplotly(average.all %>%
+ggplot(aes(x=Date, y=Length, col=FOOD:TEMP)) + 
+  geom_point() + 
+  geom_smooth(method = ""lm"", alpha = .15, aes(fill = FOOD:TEMP)))
+"
+"2","`geom_smooth()` using formula 'y ~ x'
+"
